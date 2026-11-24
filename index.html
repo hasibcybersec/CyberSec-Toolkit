@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberSec Toolkit — Ethical Hacking &amp; Security Analyzer | Hasib Hossain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-badge">SEC</span>
+        <div>
+          <h1>CyberSec Toolkit</h1>
+          <p class="subtitle">Ethical Hacking, OSINT Recon &amp; Cryptographic Audit Suite</p>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <span class="pill pill-live"><span class="dot"></span>Client-Side Zero-Knowledge</span>
+        <a class="btn-outline" href="https://github.com/hasibcybersec/CyberSec-Toolkit" target="_blank" rel="noopener">GitHub Repo</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" role="tablist" aria-label="Security Modules">
+      <button class="tab active" data-tab="password" role="tab" aria-selected="true">01. Password &amp; Breach Audit</button>
+      <button class="tab" data-tab="hash" role="tab" aria-selected="false">02. Hash Lab &amp; Identifier</button>
+      <button class="tab" data-tab="dns" role="tab" aria-selected="false">03. Live DNS &amp; Email Recon</button>
+      <button class="tab" data-tab="jwt" role="tab" aria-selected="false">04. JWT &amp; Payload Toolkit</button>
+    </nav>
+
+    <!-- MODULE 1: PASSWORD & HIBP -->
+    <section id="tab-password" class="panel active">
+      <div class="panel-header">
+        <div>
+          <h2>Password Entropy &amp; Breach Analyzer</h2>
+          <p>Calculates Shannon entropy, charset space, offline/online crack estimates, and optional HIBP k-Anonymity check (only first 5 SHA-1 hash chars leave your browser).</p>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-wrap">
+          <input id="pw-input" type="password" placeholder="Enter a test password or passphrase..." autocomplete="off" value="Kali#CyberSec!2026" />
+          <button id="pw-toggle" class="btn-ghost" type="button">Show</button>
+        </div>
+        <button id="pw-hibp-btn" class="btn-primary" type="button">Check HIBP Breach</button>
+      </div>
+      <div class="meter-track"><div id="pw-meter-fill" class="meter-fill"></div></div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Strength Verdict</span>
+          <strong id="pw-verdict" class="metric-value">Awaiting input</strong>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Pool Entropy</span>
+          <strong id="pw-entropy" class="metric-value">0.0 bits</strong>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Est. GPU Crack Time (10B/s)</span>
+          <strong id="pw-crack-gpu" class="metric-value">—</strong>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">HIBP Breach Status</span>
+          <strong id="pw-hibp-status" class="metric-value">Not checked</strong>
+        </div>
+      </div>
+      <div id="pw-findings" class="findings-box"></div>
+    </section>
+
+    <!-- MODULE 2: HASH LAB & IDENTIFIER -->
+    <section id="tab-hash" class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Cryptographic Hash Lab &amp; Hash Identifier</h2>
+          <p>Compute real MD5, SHA-1, SHA-256, SHA-384, SHA-512 &amp; HMAC-SHA256 digests via Web Crypto API, or identify unknown hashes captured during security audits.</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="subcard">
+          <h3>Digest &amp; HMAC Generator</h3>
+          <label class="field-label" for="hash-input">Input Text</label>
+          <textarea id="hash-input" rows="3" placeholder="Text to hash (e.g., payload or verification string)...">hasibcybersec::audit</textarea>
+          <label class="field-label" for="hmac-key">Optional HMAC-SHA256 Secret Key</label>
+          <input id="hmac-key" type="text" placeholder="Leave blank or enter secret key" value="redteam-lab-key" />
+          <div id="hash-outputs" class="kv-list"></div>
+        </div>
+        <div class="subcard">
+          <h3>Hash Format Identifier</h3>
+          <label class="field-label" for="hash-id-input">Paste Unknown Hash / Token</label>
+          <textarea id="hash-id-input" rows="3" placeholder="Paste MD5, SHA-1, SHA-256, SHA-512, Bcrypt, Argon2, NTLM, or JWT...">$2b$12$eImiTXuWVxfM37uY4JANjQOe3E5r2a0m9fR1n0vK1r6c1E5kQ4mGu</textarea>
+          <button id="hash-id-btn" class="btn-primary" type="button">Identify Format</button>
+          <div id="hash-id-result" class="findings-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 3: LIVE DNS & EMAIL RECON -->
+    <section id="tab-dns" class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Live DNS &amp; Email Security Recon (DoH)</h2>
+          <p>Performs passive OSINT reconnaissance via Google DNS-over-HTTPS (<code>dns.google</code>) for A, AAAA, MX, NS, CAA, TXT, SPF, and DMARC records.</p>
+        </div>
+      </div>
+      <div class="input-row">
+        <input id="dns-domain" type="text" placeholder="Enter target domain (e.g. github.com)" value="github.com" />
+        <button id="dns-scan-btn" class="btn-primary" type="button">Run Passive Recon</button>
+      </div>
+      <div id="dns-posture" class="findings-box"></div>
+      <div id="dns-records" class="records-grid"></div>
+    </section>
+
+    <!-- MODULE 4: JWT & PAYLOAD TOOLKIT -->
+    <section id="tab-jwt" class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>JWT Security Auditor &amp; Pentest Encoder</h2>
+          <p>Inspect JSON Web Tokens locally for weak algorithms (<code>alg: none</code>), missing expiry claims, and transform payloads across Base64, URL, Hex &amp; HTML.</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="subcard">
+          <h3>JWT Decoder &amp; Audit</h3>
+          <label class="field-label" for="jwt-input">JWT Token</label>
+          <textarea id="jwt-input" rows="4">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMzM3IiwibmFtZSI6Ikhhc2liIiwicm9sZSI6ImFkbWluIn0.</textarea>
+          <button id="jwt-decode-btn" class="btn-primary" type="button">Decode &amp; Audit JWT</button>
+          <div id="jwt-audit" class="findings-box"></div>
+          <pre id="jwt-output" class="code-box"></pre>
+        </div>
+        <div class="subcard">
+          <h3>Payload Encoder / Decoder</h3>
+          <label class="field-label" for="enc-input">Raw / Encoded Payload</label>
+          <textarea id="enc-input" rows="4">&lt;script&gt;alert('XSS-Test')&lt;/script&gt;</textarea>
+          <div class="btn-group">
+            <button class="btn-secondary" data-enc="b64e" type="button">Base64 Encode</button>
+            <button class="btn-secondary" data-enc="b64d" type="button">Base64 Decode</button>
+            <button class="btn-secondary" data-enc="urle" type="button">URL Encode</button>
+            <button class="btn-secondary" data-enc="urld" type="button">URL Decode</button>
+            <button class="btn-secondary" data-enc="hexe" type="button">Hex Encode</button>
+            <button class="btn-secondary" data-enc="hexd" type="button">Hex Decode</button>
+          </div>
+          <pre id="enc-output" class="code-box"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    <p>Built by <strong>Hasib Hossain</strong> (<a href="https://github.com/hasibcybersec" target="_blank" rel="noopener">@hasibcybersec</a>) · For authorized security testing &amp; educational use only.</p>
+  </footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

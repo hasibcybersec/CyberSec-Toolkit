@@ -1,0 +1,24 @@
+{
+  "name": "cybersec-toolkit",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Web-based Cybersecurity & Ethical Hacking Toolkit featuring Password Entropy & HIBP Breach Checker, Hash Lab, Live DNS/SPF/DMARC Recon, JWT Auditor, and Python CLI Header Scanner.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 4173",
+    "test": "node tests/test_toolkit.mjs"
+  },
+  "keywords": [
+    "cybersecurity",
+    "ethical-hacking",
+    "kali-linux",
+    "penetration-testing",
+    "osint",
+    "owasp",
+    "security-tools"
+  ],
+  "author": "Hasib Hossain (hasibcybersec)",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
